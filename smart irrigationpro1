@@ -1,1 +1,28 @@
+const int msensor = A0;  // Define the analog pin connected to the sensor
+const int led = 13;     // Define the digital pin connected to the LED
+bool flag = false;      // Initialize the flag variable
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(led, OUTPUT); // Set the LED pin as an output
+}
+
+void loop() {
+  int msvalue = analogRead(msensor); // Read the sensor value
+  Serial.println(msvalue);
+  
+  if (msvalue >= 500 && !flag) {  // Check if the sensor value exceeds threshold and flag is false
+    digitalWrite(led, HIGH); 
+    flag = true; 
+    delay(1000);  // Delay to debounce sensor reading
+  }
+ 
+  if (msvalue <= 300 && flag) {  // Check if the sensor value is below threshold and flag is true
+    digitalWrite(led, LOW); 
+    flag = false; 
+    delay(1000);  // Delay to debounce sensor reading
+  }
+  
+  delay(100);  // Small delay to prevent rapid looping
+}
 
